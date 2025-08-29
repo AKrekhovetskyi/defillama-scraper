@@ -63,7 +63,6 @@ class DefillamaSpider(scrapy.Spider):
         scroll_height = await page.evaluate("document.body.scrollHeight;")
         inner_height = await page.evaluate("window.innerHeight;")
         top_viewport_position = await page.evaluate("window.scrollY;")
-        count = 1
 
         while True:
             dom = etree.HTML(await page.content())
@@ -87,4 +86,3 @@ class DefillamaSpider(scrapy.Spider):
             if (top_viewport_position + inner_height) >= scroll_height:
                 break
             top_viewport_position += round(inner_height * SCROLL_STEP_MULTIPLIER)
-            count += 1
