@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
 ua = UserAgent()
 default_request_headers = {
     "accept": "*/*",
@@ -32,6 +33,9 @@ default_request_headers = {
     "sec-fetch-site": "cross-site",
     "user-agent": ua.chrome,
 }
+
+SCROLL_STEP_MULTIPLIER = 1.7
+"""Approximate value obtained by trial and error method. `2` is too big (some values could be missing)."""
 
 
 class DefillamaSpider(scrapy.Spider):
@@ -82,5 +86,5 @@ class DefillamaSpider(scrapy.Spider):
             await page.evaluate(f"window.scrollTo({top_viewport_position}, {top_viewport_position + inner_height});")
             if (top_viewport_position + inner_height) >= scroll_height:
                 break
-            top_viewport_position += round(inner_height * 1.7)
+            top_viewport_position += round(inner_height * SCROLL_STEP_MULTIPLIER)
             count += 1
